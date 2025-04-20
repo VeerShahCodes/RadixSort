@@ -5,21 +5,22 @@ namespace RadixSort
 {
     internal class Program
     {
-        public static uint[] RadixSort(uint[] list)
+        public static int[] RadixSort(int[] list)
         {
-            uint max = list.Max<uint>();
-            uint radix = 10;
+            int min = list.Min<int>();
+            int max = list.Max<int>();
+            int radix = 10;
             int n = 0;
-            Console.WriteLine(max.ToString().Length);
-            uint[] output = new uint[list.Length];
-            uint[] input = list;
-            for (int k = 0; k < max.ToString().Length; k++)
+            int[] output = new int[list.Length];
+            int[] input = list;
+            int repeatLength = (max-min).ToString().Length;
+            for (int k = 0; k < repeatLength; k++)
             {
                 int[] buckets = new int[radix];
 
                 for (int i = 0; i < input.Length; i++)
                 {
-                    buckets[(int)(input[i] / Math.Pow(10, n) %10)] += 1;
+                    buckets[(int)((input[i] - min)/ Math.Pow(10, n) %10)] += 1;
                 }
 
 
@@ -34,11 +35,11 @@ namespace RadixSort
 
                 for (int i = input.Length - 1; i >= 0; i--)
                 {
-                    uint index = (uint)(input[i] / Math.Pow(10, n) % 10);
+                    int index = (int)((input[i] - min) / Math.Pow(10, n) % 10);
                     output[--buckets[index]] = input[i];
                 }
 
-                input = (uint[])output.Clone();
+                input = (int[])output.Clone();
                 n++;
             }
 
@@ -49,14 +50,12 @@ namespace RadixSort
         }
         static void Main(string[] args)
         {
-            uint[] arr = new uint[1000];
+            int[] arr = new int[1000];
             Random random = new Random();
             for(int i = 0; i < arr.Length; i++)
             {
-                arr[i] = (uint)random.Next(1000);
-                Console.Write(arr[i] + " ");
+                arr[i] = (int)random.Next(-1000, 1000);
             }
-            Console.WriteLine();
 
             arr = RadixSort(arr);
             ;
